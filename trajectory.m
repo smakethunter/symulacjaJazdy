@@ -3,6 +3,7 @@ clear all
 close all
 
 %% USER INPUT: Path to file to load
+
 grid_data_path = 'test_data/occupancy_grid_recording.mat';
 host_data_path = 'test_data/host_data.mat';
 scans_to_plot = []; % set to empty to plot all scans
@@ -58,7 +59,7 @@ for idx = 1:length(scans_to_plot)
     
 grid_cell_idx = sub2ind(sub_x, sub_y);
 
-first_occupied_cell_on_trajectory_idx = find((grid_map(grid_cell_idx))> 0.5 , 1);   
+first_occupied_cell_on_trajectory_idx = find((cell2mat(grid_map(grid_cell_idx)))> 0.5 , 1);   
 
 time_to_collision = sqrt((trajectory_x(length(trajectory_x)))^2+(trajectory_y(length(trajectory_y)))^2);
 % time_to_collision = estimation_time(first_occupied_cell_on_trajectory_idx);
@@ -68,6 +69,11 @@ time_to_collision = sqrt((trajectory_x(length(trajectory_x)))^2+(trajectory_y(le
         sprintf("Scan nr: %d/%d, time from beginning: %2.2fs \n Distance to collision: %2.2fs", scan_idx, scan_number, host_pose_current.ts,time_to_collision));
     host_plotter.updateHostPose(host_pose_current);
     trajectory_plotter.updateTrajectoryLine(trajectory_x, trajectory_y);
+    if idx==1
+        gif('myfile.gif');
+    else
+    gif;
+    end
     pause(0.01); % required to force figure update
 end
 
